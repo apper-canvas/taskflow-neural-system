@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ApperIcon from '@/components/ApperIcon';
-import { Button } from '@/components/atoms/Button';
-import { Badge } from '@/components/atoms/Badge';
+import Button from '@/components/atoms/Button';
+import Badge from '@/components/atoms/Badge';
 import { useTasks } from '@/hooks/useTasks';
 import { formatDistanceToNow, startOfWeek, endOfWeek, eachDayOfInterval, format, subWeeks, isWithinInterval } from 'date-fns';
 import Chart from 'react-apexcharts';

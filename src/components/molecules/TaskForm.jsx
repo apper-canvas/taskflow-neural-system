@@ -6,7 +6,7 @@ import Button from "@/components/atoms/Button";
 import Input from "@/components/atoms/Input";
 import { formatDateForInput } from "@/utils/dateUtils";
 import { cn } from "@/utils/cn";
-import { toast } from "react-hot-toast";
+import { toast } from "react-toastify";
 
 const FileUpload = ({ attachments, onAttachmentsChange, maxFiles = 5, maxSize = 5 * 1024 * 1024 }) => {
   const [dragActive, setDragActive] = useState(false);

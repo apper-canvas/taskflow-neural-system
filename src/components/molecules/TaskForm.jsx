@@ -209,10 +209,8 @@ value={formData.priority_c}
           {errors.due_date_c && (
             <p className="text-sm text-red-600">{errors.due_date_c}</p>
           )}
-        </div>
 </div>
       </div>
-        
       {/* Attachments */}
       <div>
         <label className="block text-sm font-medium text-slate-700 mb-2">

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ApperIcon from '@/components/ApperIcon';
 import Button from '@/components/atoms/Button';
-import { Badge } from '@/components/atoms/Badge';
+import Badge from '@/components/atoms/Badge';
 import { useTasks } from '@/hooks/useTasks';
 import { formatDistanceToNow } from 'date-fns';
 

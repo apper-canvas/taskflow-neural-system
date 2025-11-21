@@ -5,14 +5,15 @@ import { toast } from "react-toastify";
 export const useTasks = () => {
   const [tasks, setTasks] = useLocalStorage("taskflow-tasks", []);
 
-  const addTask = (taskData) => {
+const addTask = (taskData) => {
     try {
       const newTask = {
         id: generateTaskId(),
         ...taskData,
         completed: false,
         createdAt: new Date().toISOString(),
-        completedAt: null
+        completedAt: null,
+        attachments: taskData.attachments || []
       };
 
       setTasks(prevTasks => sortTasks([...prevTasks, newTask]));
@@ -24,11 +25,15 @@ export const useTasks = () => {
     }
   };
 
-  const updateTask = (id, updates) => {
+const updateTask = (id, updates) => {
     try {
       setTasks(prevTasks => {
         const updatedTasks = prevTasks.map(task => 
-          task.id === id ? { ...task, ...updates } : task
+          task.id === id ? { 
+            ...task, 
+            ...updates,
+            attachments: updates.attachments || task.attachments || []
+          } : task
         );
         return sortTasks(updatedTasks);
       });

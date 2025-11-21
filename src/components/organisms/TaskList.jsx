@@ -1,8 +1,8 @@
 import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { filterTasks } from "@/utils/taskUtils";
-import TaskCard from "@/components/molecules/TaskCard";
 import Empty from "@/components/ui/Empty";
+import TaskCard from "@/components/molecules/TaskCard";
+import { filterTasks } from "@/utils/taskUtils";
 
 const TaskList = ({ 
   tasks, 
@@ -69,7 +69,7 @@ const filteredTasks = filterTasks(tasks, statusFilter, priorityFilter, searchTex
             </span>
           </h2>
           
-          <motion.div layout className="space-y-3">
+<motion.div layout className="space-y-3">
             <AnimatePresence mode="popLayout">
               {activeTasks.map((task) => (
                 <TaskCard
@@ -81,7 +81,7 @@ const filteredTasks = filterTasks(tasks, statusFilter, priorityFilter, searchTex
                   onDelete={onDelete}
                 />
               ))}
-            </AnimatePresence>
+</AnimatePresence>
           </motion.div>
         </section>
       )}
@@ -97,7 +97,7 @@ const filteredTasks = filterTasks(tasks, statusFilter, priorityFilter, searchTex
             </span>
           </h2>
           
-          <motion.div layout className="space-y-3">
+<motion.div layout className="space-y-3">
             <AnimatePresence mode="popLayout">
               {completedTasks.map((task) => (
                 <TaskCard
@@ -108,7 +108,7 @@ const filteredTasks = filterTasks(tasks, statusFilter, priorityFilter, searchTex
                   onEdit={onEdit}
                   onDelete={onDelete}
                 />
-              ))}
+))}
             </AnimatePresence>
           </motion.div>
         </section>

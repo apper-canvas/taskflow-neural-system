@@ -1,39 +1,194 @@
-import React, { useState, useEffect } from "react";
-import { cn } from "@/utils/cn";
-import { formatDateForInput } from "@/utils/dateUtils";
-import Input from "@/components/atoms/Input";
+import React, { useEffect, useState } from "react";
+import ApperIcon from "@/components/ApperIcon";
 import Textarea from "@/components/atoms/Textarea";
 import Select from "@/components/atoms/Select";
 import Button from "@/components/atoms/Button";
-import ApperIcon from "@/components/ApperIcon";
+import Input from "@/components/atoms/Input";
+import { formatDateForInput } from "@/utils/dateUtils";
+import { cn } from "@/utils/cn";
+import { toast } from "react-hot-toast";
 
+const FileUpload = ({ attachments, onAttachmentsChange, maxFiles = 5, maxSize = 5 * 1024 * 1024 }) => {
+  const [dragActive, setDragActive] = useState(false);
+
+  const validateFile = (file) => {
+    if (file.size > maxSize) {
+      return `File size must be less than ${Math.round(maxSize / (1024 * 1024))}MB`;
+    }
+    return null;
+  };
+
+  const processFiles = (files) => {
+    const fileList = Array.from(files);
+    const validFiles = [];
+    const errors = [];
+
+    fileList.forEach(file => {
+      const error = validateFile(file);
+      if (error) {
+        errors.push(`${file.name}: ${error}`);
+      } else if (attachments.length + validFiles.length < maxFiles) {
+        validFiles.push(file);
+      } else {
+        errors.push(`Maximum ${maxFiles} files allowed`);
+      }
+    });
+
+    if (errors.length > 0) {
+      toast.error(`Upload failed: ${errors[0]}`);
+    }
+
+    if (validFiles.length > 0) {
+      const newAttachments = [...attachments];
+      
+      validFiles.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const attachment = {
+            name: file.name,
+            size: file.size,
+            type: file.type,
+            dataUrl: e.target.result,
+            uploadedAt: new Date().toISOString()
+          };
+          newAttachments.push(attachment);
+          onAttachmentsChange([...newAttachments]);
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  };
+
+  const handleDrag = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
+    }
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      processFiles(e.dataTransfer.files);
+    }
+  };
+
+  const handleFileSelect = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      processFiles(e.target.files);
+    }
+  };
+
+  const removeAttachment = (index) => {
+    const newAttachments = attachments.filter((_, i) => i !== index);
+    onAttachmentsChange(newAttachments);
+  };
+
+  return (
+    <div className="space-y-3">
+      <div
+        className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors duration-200 ${
+          dragActive
+            ? "border-primary bg-primary/5"
+            : "border-slate-300 hover:border-primary/50"
+        }`}
+        onDragEnter={handleDrag}
+        onDragLeave={handleDrag}
+        onDragOver={handleDrag}
+        onDrop={handleDrop}
+      >
+        <input
+          type="file"
+          multiple
+          onChange={handleFileSelect}
+          className="hidden"
+          id="file-upload"
+          accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.gif"
+        />
+        <label htmlFor="file-upload" className="cursor-pointer">
+          <ApperIcon name="Upload" className="w-8 h-8 text-slate-400 mx-auto mb-2" />
+          <p className="text-sm text-slate-600 mb-1">
+            Drag files here or <span className="text-primary font-medium">browse</span>
+          </p>
+          <p className="text-xs text-slate-500">
+            Max {maxFiles} files, up to {Math.round(maxSize / (1024 * 1024))}MB each
+          </p>
+        </label>
+      </div>
+
+      {attachments.length > 0 && (
+        <div className="space-y-2">
+          <h4 className="text-sm font-medium text-slate-700">Attached Files</h4>
+          {attachments.map((attachment, index) => (
+            <div key={index} className="flex items-center justify-between bg-slate-50 rounded-lg px-3 py-2">
+              <div className="flex items-center gap-3">
+                <ApperIcon 
+                  name={attachment.type?.startsWith('image/') ? 'Image' : 'File'} 
+                  size={16} 
+                  className="text-slate-500" 
+                />
+                <div>
+                  <p className="text-sm font-medium text-slate-700">{attachment.name}</p>
+                  <p className="text-xs text-slate-500">
+                    {(attachment.size / 1024).toFixed(0)}KB
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => removeAttachment(index)}
+                className="text-slate-400 hover:text-red-500 transition-colors duration-200"
+              >
+                <ApperIcon name="X" size={16} />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 const TaskForm = ({ 
   onSubmit, 
   onCancel, 
   initialTask = null,
   isEditing = false 
 }) => {
-  const [formData, setFormData] = useState({
+const [formData, setFormData] = useState({
     title: "",
     description: "",
     priority: "medium",
-    dueDate: ""
+    dueDate: "",
+    attachments: []
   });
 
   const [errors, setErrors] = useState({});
 
-  // Initialize form with task data if editing
+// Initialize form with task data if editing
   useEffect(() => {
     if (initialTask) {
       setFormData({
         title: initialTask.title || "",
         description: initialTask.description || "",
         priority: initialTask.priority || "medium",
-        dueDate: initialTask.dueDate ? formatDateForInput(initialTask.dueDate) : ""
+        dueDate: initialTask.dueDate ? formatDateForInput(initialTask.dueDate) : "",
+        attachments: initialTask.attachments || []
       });
     }
   }, [initialTask]);
 
+  const handleAttachmentsChange = (newAttachments) => {
+    setFormData(prev => ({
+      ...prev,
+      attachments: newAttachments
+    }));
+  };
   const validateForm = () => {
     const newErrors = {};
 
@@ -62,11 +217,12 @@ const TaskForm = ({
       return;
     }
 
-    const taskData = {
+const taskData = {
       ...formData,
       title: formData.title.trim(),
       description: formData.description.trim(),
-      dueDate: formData.dueDate || null
+      dueDate: formData.dueDate || null,
+      attachments: formData.attachments || []
     };
 
     onSubmit(taskData);
@@ -76,8 +232,9 @@ const TaskForm = ({
       setFormData({
         title: "",
         description: "",
-        priority: "medium",
-        dueDate: ""
+priority: "medium",
+        dueDate: "",
+        attachments: []
       });
     }
     
@@ -101,8 +258,9 @@ const TaskForm = ({
       setFormData({
         title: "",
         description: "",
-        priority: "medium",
-        dueDate: ""
+priority: "medium",
+        dueDate: "",
+        attachments: []
       });
       setErrors({});
     }
@@ -180,9 +338,19 @@ const TaskForm = ({
               {errors.dueDate}
             </p>
           )}
+</div>
+        
+        {/* Attachments */}
+        <div>
+          <label className="block text-sm font-medium text-slate-700 mb-2">
+            Attachments
+          </label>
+          <FileUpload 
+            attachments={formData.attachments}
+            onAttachmentsChange={handleAttachmentsChange}
+          />
         </div>
       </div>
-
       {/* Actions */}
       <div className="flex items-center gap-3 pt-2">
         <Button 

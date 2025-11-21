@@ -8,6 +8,68 @@ import Button from "@/components/atoms/Button";
 import Badge from "@/components/atoms/Badge";
 import ApperIcon from "@/components/ApperIcon";
 
+const AttachmentList = ({ attachments }) => {
+  if (!attachments || attachments.length === 0) return null;
+
+  const downloadFile = (attachment) => {
+    try {
+      const link = document.createElement('a');
+      link.href = attachment.dataUrl;
+      link.download = attachment.name;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Error downloading file:', error);
+    }
+  };
+
+  return (
+    <div className="mt-3 pt-3 border-t border-slate-100">
+      <div className="flex items-center gap-2 mb-2">
+        <ApperIcon name="Paperclip" size={14} className="text-slate-500" />
+        <span className="text-sm font-medium text-slate-600">
+          {attachments.length} attachment{attachments.length !== 1 ? 's' : ''}
+        </span>
+      </div>
+      <div className="space-y-1">
+        {attachments.slice(0, 3).map((attachment, index) => (
+          <div key={index} className="flex items-center justify-between bg-slate-50 rounded-md px-2 py-1">
+            <div className="flex items-center gap-2 flex-1 min-w-0">
+              <ApperIcon 
+                name={attachment.type?.startsWith('image/') ? 'Image' : 'File'} 
+                size={12} 
+                className="text-slate-400 flex-shrink-0" 
+              />
+              <span className="text-xs text-slate-600 truncate">
+                {attachment.name}
+              </span>
+              <span className="text-xs text-slate-400 flex-shrink-0">
+                ({(attachment.size / 1024).toFixed(0)}KB)
+              </span>
+            </div>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                downloadFile(attachment);
+              }}
+              className="text-slate-400 hover:text-primary transition-colors duration-200 flex-shrink-0"
+            >
+              <ApperIcon name="Download" size={12} />
+            </button>
+          </div>
+        ))}
+        {attachments.length > 3 && (
+          <div className="text-xs text-slate-500 px-2">
+            +{attachments.length - 3} more attachment{attachments.length - 3 !== 1 ? 's' : ''}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 const TaskCard = ({ 
   task, 
   onComplete, 
@@ -119,7 +181,8 @@ const TaskCard = ({
               </Badge>
             </div>
           )}
-
+{/* Attachments */}
+          <AttachmentList attachments={task.attachments} />
           {/* Actions */}
           <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
             <Button

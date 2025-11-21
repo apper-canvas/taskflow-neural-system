@@ -5,14 +5,14 @@ export const generateTaskId = () => {
 export const filterTasks = (tasks, statusFilter, priorityFilter, searchText = "") => {
   return tasks.filter(task => {
     const statusMatch = statusFilter === "all" || 
-                       (statusFilter === "active" && !task.completed) ||
-                       (statusFilter === "completed" && task.completed);
+                       (statusFilter === "active" && !task.completed_c) ||
+                       (statusFilter === "completed" && task.completed_c);
     
-    const priorityMatch = priorityFilter === "all" || task.priority === priorityFilter;
+    const priorityMatch = priorityFilter === "all" || task.priority_c === priorityFilter;
     
     const searchMatch = !searchText || 
-                       task.title?.toLowerCase().includes(searchText.toLowerCase()) ||
-                       task.description?.toLowerCase().includes(searchText.toLowerCase());
+                       task.title_c?.toLowerCase().includes(searchText.toLowerCase()) ||
+                       task.description_c?.toLowerCase().includes(searchText.toLowerCase());
     
     return statusMatch && priorityMatch && searchMatch;
   });
@@ -21,27 +21,27 @@ export const filterTasks = (tasks, statusFilter, priorityFilter, searchText = ""
 export const sortTasks = (tasks) => {
   return [...tasks].sort((a, b) => {
     // First, sort by completion status (incomplete first)
-    if (a.completed !== b.completed) {
-      return a.completed ? 1 : -1;
+    if (a.completed_c !== b.completed_c) {
+      return a.completed_c ? 1 : -1;
     }
     
     // Then by priority (high, medium, low)
     const priorityOrder = { high: 0, medium: 1, low: 2 };
-    if (a.priority !== b.priority) {
-      return priorityOrder[a.priority] - priorityOrder[b.priority];
+    if (a.priority_c !== b.priority_c) {
+      return priorityOrder[a.priority_c] - priorityOrder[b.priority_c];
     }
     
     // Then by due date (earliest first)
-    if (a.dueDate && b.dueDate) {
-      return new Date(a.dueDate) - new Date(b.dueDate);
-    } else if (a.dueDate) {
+    if (a.due_date_c && b.due_date_c) {
+      return new Date(a.due_date_c) - new Date(b.due_date_c);
+    } else if (a.due_date_c) {
       return -1;
-    } else if (b.dueDate) {
+    } else if (b.due_date_c) {
       return 1;
     }
     
     // Finally by creation date (newest first)
-    return new Date(b.createdAt) - new Date(a.createdAt);
+    return new Date(b.CreatedOn) - new Date(a.CreatedOn);
   });
 };
 

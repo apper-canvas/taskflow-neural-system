@@ -16,9 +16,8 @@ const TaskList = ({
   onCreateTask
 }) => {
 const filteredTasks = filterTasks(tasks, statusFilter, priorityFilter, searchText);
-  const activeTasks = filteredTasks.filter(task => !task.completed);
-  const completedTasks = filteredTasks.filter(task => task.completed);
-
+  const activeTasks = filteredTasks.filter(task => !task.completed_c);
+  const completedTasks = filteredTasks.filter(task => task.completed_c);
   // Show empty state if no tasks exist at all
   if (tasks.length === 0) {
     return (

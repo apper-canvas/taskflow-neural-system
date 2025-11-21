@@ -7,7 +7,7 @@ import { useTasks } from '@/hooks/useTasks';
 import { formatDistanceToNow } from 'date-fns';
 
 const Dashboard = () => {
-  const { tasks, loading, error } = useTasks();
+const { tasks, loading, error } = useTasks();
   const [stats, setStats] = useState({
     total: 0,
     completed: 0,
@@ -15,13 +15,13 @@ const Dashboard = () => {
     overdue: 0
   });
 
-  useEffect(() => {
+useEffect(() => {
     if (tasks) {
       const now = new Date();
-      const completed = tasks.filter(task => task.completed).length;
-      const pending = tasks.filter(task => !task.completed).length;
+      const completed = tasks.filter(task => task.completed_c).length;
+      const pending = tasks.filter(task => !task.completed_c).length;
       const overdue = tasks.filter(task => 
-        !task.completed && task.dueDate && new Date(task.dueDate) < now
+        !task.completed_c && task.due_date_c && new Date(task.due_date_c) < now
       ).length;
 
       setStats({
@@ -137,22 +137,22 @@ const Dashboard = () => {
                 <div key={task.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
                   <div className="flex items-center space-x-3">
                     <div className={`w-3 h-3 rounded-full ${
-                      task.priority === 'high' ? 'bg-red-500' :
-                      task.priority === 'medium' ? 'bg-amber-500' : 'bg-blue-500'
+task.priority_c === 'high' ? 'bg-red-500' :
+                      task.priority_c === 'medium' ? 'bg-amber-500' : 'bg-blue-500'
                     }`} />
                     <div>
                       <p className={`font-medium ${task.completed ? 'line-through text-slate-500' : 'text-slate-900'}`}>
-                        {task.title}
+{task.title_c}
                       </p>
-                      {task.dueDate && (
+{task.due_date_c && (
                         <p className="text-sm text-slate-500">
-                          Due {formatDistanceToNow(new Date(task.dueDate), { addSuffix: true })}
+                          Due {formatDistanceToNow(new Date(task.due_date_c), { addSuffix: true })}
                         </p>
                       )}
                     </div>
-                  </div>
-                  <Badge variant={task.completed ? 'success' : 'secondary'}>
-                    {task.completed ? 'Completed' : 'Pending'}
+</div>
+                  <Badge variant={task.completed_c ? 'success' : 'secondary'}>
+                    {task.completed_c ? 'Completed' : 'Pending'}
                   </Badge>
                 </div>
               ))
@@ -190,7 +190,7 @@ const Dashboard = () => {
               <h3 className="text-sm font-medium text-slate-600 mb-3">Priority Distribution</h3>
               <div className="space-y-2">
                 {['high', 'medium', 'low'].map(priority => {
-                  const count = tasks?.filter(task => task.priority === priority && !task.completed).length || 0;
+const count = tasks?.filter(task => task.priority_c === priority && !task.completed_c).length || 0;
                   const percentage = stats.pending > 0 ? Math.round((count / stats.pending) * 100) : 0;
                   const colorClass = priority === 'high' ? 'bg-red-500' : 
                                    priority === 'medium' ? 'bg-amber-500' : 'bg-blue-500';

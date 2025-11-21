@@ -14,8 +14,8 @@ const AttachmentList = ({ attachments }) => {
   const downloadFile = (attachment) => {
     try {
       const link = document.createElement('a');
-      link.href = attachment.dataUrl;
-      link.download = attachment.name;
+      link.href = attachment.url || attachment.Url;
+      link.download = attachment.name || attachment.Name;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -37,15 +37,15 @@ const AttachmentList = ({ attachments }) => {
           <div key={index} className="flex items-center justify-between bg-slate-50 rounded-md px-2 py-1">
             <div className="flex items-center gap-2 flex-1 min-w-0">
               <ApperIcon 
-                name={attachment.type?.startsWith('image/') ? 'Image' : 'File'} 
+                name={attachment.type?.startsWith('image/') || attachment.Type?.startsWith('image/') ? 'Image' : 'File'} 
                 size={12} 
                 className="text-slate-400 flex-shrink-0" 
               />
               <span className="text-xs text-slate-600 truncate">
-                {attachment.name}
+                {attachment.name || attachment.Name}
               </span>
               <span className="text-xs text-slate-400 flex-shrink-0">
-                ({(attachment.size / 1024).toFixed(0)}KB)
+                ({((attachment.size || attachment.Size) / 1024).toFixed(0)}KB)
               </span>
             </div>
             <button
@@ -78,21 +78,21 @@ const TaskCard = ({
   onDelete 
 }) => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const dueDateStatus = getDueDateStatus(task.dueDate);
+const dueDateStatus = getDueDateStatus(task.due_date_c);
 
   const handleToggleComplete = () => {
-    if (task.completed) {
-      onUncomplete(task.id);
+if (task.completed_c) {
+      onUncomplete(task.Id);
     } else {
-      onComplete(task.id);
+      onComplete(task.Id);
     }
   };
 
-  const handleDelete = () => {
-    onDelete(task.id);
-    setShowDeleteConfirm(false);
+const handleDelete = () => {
+if (window.confirm('Are you sure you want to delete this task?')) {
+      onDelete(task.Id);
+    }
   };
-
   const getDueDateColor = (status) => {
     switch (status) {
       case "overdue":
@@ -115,15 +115,15 @@ const TaskCard = ({
       transition={{ duration: 0.2, ease: "easeOut" }}
       className={cn(
         "group bg-white rounded-xl shadow-card border border-slate-200 p-4 transition-all duration-200 hover:shadow-card-hover hover:-translate-y-1",
-        task.completed && "opacity-75",
-        !task.completed && getPriorityGlow(task.priority)
+task.completed_c && "opacity-75",
+        !task.completed_c && getPriorityGlow(task.priority_c)
       )}
     >
       <div className="flex items-start gap-3">
         {/* Checkbox */}
         <div className="flex-shrink-0 pt-1">
           <Checkbox
-            checked={task.completed}
+checked={task.completed_c}
             onChange={handleToggleComplete}
           />
         </div>
@@ -132,35 +132,35 @@ const TaskCard = ({
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-2 mb-2">
             <h3 className={cn(
-              "font-medium text-slate-900 leading-tight",
-              task.completed && "line-through text-slate-500"
+"font-medium text-slate-900 leading-tight",
+              task.completed_c && "line-through text-slate-500"
             )}>
-              {task.title}
+              {task.title_c}
             </h3>
             
             {/* Priority Badge */}
-            <Badge variant={task.priority} className="flex-shrink-0">
+<Badge variant={task.priority_c} className="flex-shrink-0">
               <ApperIcon 
-                name={task.priority === "high" ? "AlertTriangle" : 
-                      task.priority === "medium" ? "AlertCircle" : "Info"} 
+                name={task.priority_c === "high" ? "AlertTriangle" : 
+                      task.priority_c === "medium" ? "AlertCircle" : "Info"} 
                 className="w-3 h-3 mr-1" 
               />
-              {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
+              {task.priority_c?.charAt(0).toUpperCase() + task.priority_c?.slice(1)}
             </Badge>
           </div>
 
           {/* Description */}
-          {task.description && (
+{task.description_c && (
             <p className={cn(
               "text-sm text-slate-600 mb-3 leading-relaxed",
-              task.completed && "line-through text-slate-400"
+              task.completed_c && "line-through text-slate-400"
             )}>
-              {task.description}
+              {task.description_c}
             </p>
           )}
 
           {/* Due Date */}
-          {task.dueDate && (
+{task.due_date_c && (
             <div className="flex items-center gap-2 mb-3">
               <ApperIcon 
                 name="Calendar" 
@@ -177,12 +177,12 @@ const TaskCard = ({
                   getDueDateColor(dueDateStatus)
                 )}
               >
-                {formatDueDate(task.dueDate)}
+                {formatDueDate(task.due_date_c)}
               </Badge>
             </div>
           )}
 {/* Attachments */}
-          <AttachmentList attachments={task.attachments} />
+<AttachmentList attachments={task.attachments_c} />
           {/* Actions */}
           <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
             <Button

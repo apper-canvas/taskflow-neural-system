@@ -7,7 +7,7 @@ import { formatDistanceToNow, startOfWeek, endOfWeek, eachDayOfInterval, format,
 import Chart from 'react-apexcharts';
 
 const Analytics = () => {
-  const { tasks, loading, error } = useTasks();
+const { tasks, loading, error } = useTasks();
   const [timeRange, setTimeRange] = useState('week'); // week, month, all
   const [chartData, setChartData] = useState({
     completion: { series: [], options: {} },
@@ -30,18 +30,18 @@ const Analytics = () => {
       const weekStart = startOfWeek(now);
       const weekEnd = endOfWeek(now);
       filteredTasks = tasks.filter(task => 
-        task.createdAt && isWithinInterval(new Date(task.createdAt), { start: weekStart, end: weekEnd })
+task.CreatedOn && isWithinInterval(new Date(task.CreatedOn), { start: weekStart, end: weekEnd })
       );
-    } else if (timeRange === 'month') {
+    } else {
       const monthStart = subWeeks(now, 4);
-      filteredTasks = tasks.filter(task => 
+      filteredTasks = tasks.filter(task =>
         task.createdAt && new Date(task.createdAt) >= monthStart
       );
     }
 
     // Completion Chart Data
-    const completed = filteredTasks.filter(task => task.completed).length;
-    const pending = filteredTasks.filter(task => !task.completed).length;
+const completed = filteredTasks.filter(task => task.completed_c).length;
+    const pending = filteredTasks.filter(task => !task.completed_c).length;
     
     const completionChart = {
       series: [completed, pending],
@@ -70,9 +70,9 @@ const Analytics = () => {
     };
 
     // Priority Distribution Chart
-    const highPriority = filteredTasks.filter(task => task.priority === 'high').length;
-    const mediumPriority = filteredTasks.filter(task => task.priority === 'medium').length;
-    const lowPriority = filteredTasks.filter(task => task.priority === 'low').length;
+const highPriority = filteredTasks.filter(task => task.priority_c === 'high').length;
+    const mediumPriority = filteredTasks.filter(task => task.priority_c === 'medium').length;
+    const lowPriority = filteredTasks.filter(task => task.priority_c === 'low').length;
     
     const priorityChart = {
       series: [{
@@ -97,8 +97,8 @@ const Analytics = () => {
     });
 
     const dailyData = last7Days.map(day => {
-      const dayTasks = tasks.filter(task => 
-        task.createdAt && format(new Date(task.createdAt), 'yyyy-MM-dd') === format(day, 'yyyy-MM-dd')
+const dayTasks = tasks.filter(task => 
+        task.CreatedOn && format(new Date(task.CreatedOn), 'yyyy-MM-dd') === format(day, 'yyyy-MM-dd')
       ).length;
       return dayTasks;
     });
@@ -138,7 +138,7 @@ const Analytics = () => {
 
   const getProductivityScore = () => {
     if (!tasks || tasks.length === 0) return 0;
-    const completedTasks = tasks.filter(task => task.completed).length;
+const completedTasks = tasks.filter(task => task.completed_c).length;
     return Math.round((completedTasks / tasks.length) * 100);
   };
 
@@ -146,8 +146,8 @@ const Analytics = () => {
     if (!tasks || tasks.length === 0) return 0;
     const now = new Date();
     const weekAgo = subWeeks(now, 1);
-    const recentTasks = tasks.filter(task => 
-      task.createdAt && new Date(task.createdAt) >= weekAgo
+const recentTasks = tasks.filter(task => 
+      task.CreatedOn && new Date(task.CreatedOn) >= weekAgo
     );
     return Math.round(recentTasks.length / 7);
   };

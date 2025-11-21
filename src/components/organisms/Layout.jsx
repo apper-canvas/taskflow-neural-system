@@ -3,15 +3,16 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 import ApperIcon from "@/components/ApperIcon";
 import { useTasks } from "@/hooks/useTasks";
 import { filterTasks } from "@/utils/taskUtils";
+import { useAuth } from "@/layouts/Root";
 
 const Layout = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const formRef = useRef(null);
-
+  const { logout } = useAuth();
+  
   // Task management state and handlers from useTasks hook
   const taskManagement = useTasks();
-  
   // Additional UI state for TaskManager
   const [statusFilter, setStatusFilter] = useState('all');
   const [priorityFilter, setPriorityFilter] = useState('all');
@@ -175,7 +176,7 @@ const isActive = item.href === '/' ? location.pathname === '/' : location.pathna
                   )?.name || 'Dashboard'}
                 </h2>
               </div>
-            </div>
+</div>
             
             <div className="flex items-center gap-3">
               <button className="p-2 text-slate-400 hover:text-slate-500 hover:bg-slate-100 rounded-full">
@@ -183,6 +184,13 @@ const isActive = item.href === '/' ? location.pathname === '/' : location.pathna
               </button>
               <button className="p-2 text-slate-400 hover:text-slate-500 hover:bg-slate-100 rounded-full">
                 <ApperIcon name="Settings" className="h-5 w-5" />
+              </button>
+              <button 
+                onClick={logout}
+                className="p-2 text-slate-400 hover:text-slate-500 hover:bg-slate-100 rounded-full"
+                title="Logout"
+              >
+                <ApperIcon name="LogOut" className="h-5 w-5" />
               </button>
             </div>
           </div>

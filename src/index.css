@@ -8,9 +8,9 @@ body {
   font-family: 'Proxima Nova', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #F5F5DC;
+background-color: #F0FDFA;
   min-height: 100vh;
-  color: #2E2210;
+  color: #042F2E;
 }
 
 /* Toast Overrides */
@@ -20,29 +20,29 @@ body {
 
 .Toastify__toast {
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(139, 134, 57, 0.15);
+box-shadow: 0 4px 12px rgba(20, 184, 166, 0.15);
   font-family: 'Proxima Nova', sans-serif;
   font-size: 14px;
   min-height: 56px;
 }
 
 .Toastify__toast--success {
-  background: linear-gradient(135deg, #A67C52, #8B6635);
-  color: #FDFDF8;
+  background: linear-gradient(135deg, #14B8A6, #0D9488);
+  color: #F0FDFA;
 }
 
 .Toastify__toast--error {
-  background: linear-gradient(135deg, #C19A6B, #A67C52);
-  color: #FDFDF8;
+  background: linear-gradient(135deg, #2DD4BF, #14B8A6);
+  color: #042F2E;
 }
 
 .Toastify__toast--info {
-  background: linear-gradient(135deg, #D4B896, #C19A6B);
-  color: #2E2210;
+  background: linear-gradient(135deg, #99F6E4, #5EEAD4);
+  color: #042F2E;
 }
 
 .Toastify__progress-bar {
-  background: rgba(46, 34, 16, 0.3);
+  background: rgba(4, 47, 46, 0.3);
 }
 
 /* Custom Scrollbar */
@@ -51,22 +51,22 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #F3EDE0;
+  background: #CCFBF1;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #D4B896;
+  background: #99F6E4;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #C19A6B;
+  background: #5EEAD4;
 }
 
 /* Smooth focus outlines */
 *:focus {
-  outline: 2px solid #A67C52;
+  outline: 2px solid #14B8A6;
   outline-offset: 2px;
 }
 
@@ -90,13 +90,13 @@ body {
 }
 
 .priority-glow-high {
-  box-shadow: 0 0 20px rgba(193, 154, 107, 0.3);
+  box-shadow: 0 0 20px rgba(20, 184, 166, 0.3);
 }
 
 .priority-glow-medium {
-  box-shadow: 0 0 20px rgba(212, 184, 150, 0.3);
+  box-shadow: 0 0 20px rgba(45, 212, 191, 0.3);
 }
 
 .priority-glow-low {
-  box-shadow: 0 0 20px rgba(166, 124, 82, 0.3);
+  box-shadow: 0 0 20px rgba(153, 246, 228, 0.3);
 }

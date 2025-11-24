@@ -120,12 +120,12 @@ const navigation = [
       <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       } transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0`}>
-        <div className="flex items-center justify-center h-16 px-4 bg-gradient-to-r from-primary to-secondary">
+<div className="flex items-center justify-center h-16 px-4 bg-gradient-to-r from-primary to-secondary">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
-              <ApperIcon name="CheckSquare" className="w-5 h-5 text-white" />
+              <ApperIcon name="Brain" className="w-5 h-5 text-white" />
             </div>
-            <h1 className="text-xl font-bold text-white">TaskFlow</h1>
+            <h1 className="text-xl font-bold text-white">AI Assistant</h1>
           </div>
         </div>
 

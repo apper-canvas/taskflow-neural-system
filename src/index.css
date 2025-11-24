@@ -8,9 +8,9 @@ body {
   font-family: 'Proxima Nova', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-background-color: #F0FDFA;
+  background-color: #134E4A;
   min-height: 100vh;
-  color: #042F2E;
+  color: #F0FDFA;
 }
 
 /* Toast Overrides */
@@ -27,22 +27,22 @@ box-shadow: 0 4px 12px rgba(20, 184, 166, 0.15);
 }
 
 .Toastify__toast--success {
-  background: linear-gradient(135deg, #14B8A6, #0D9488);
+  background: linear-gradient(135deg, #0D9488, #0F766E);
   color: #F0FDFA;
 }
 
 .Toastify__toast--error {
-  background: linear-gradient(135deg, #2DD4BF, #14B8A6);
-  color: #042F2E;
+  background: linear-gradient(135deg, #DC2626, #B91C1C);
+  color: #F0FDFA;
 }
 
 .Toastify__toast--info {
-  background: linear-gradient(135deg, #99F6E4, #5EEAD4);
-  color: #042F2E;
+  background: linear-gradient(135deg, #0F766E, #115E59);
+  color: #F0FDFA;
 }
 
 .Toastify__progress-bar {
-  background: rgba(4, 47, 46, 0.3);
+  background: rgba(240, 253, 250, 0.3);
 }
 
 /* Custom Scrollbar */
@@ -51,22 +51,22 @@ box-shadow: 0 4px 12px rgba(20, 184, 166, 0.15);
 }
 
 ::-webkit-scrollbar-track {
-  background: #CCFBF1;
+  background: #0F766E;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #99F6E4;
+  background: #115E59;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #5EEAD4;
+  background: #134E4A;
 }
 
 /* Smooth focus outlines */
 *:focus {
-  outline: 2px solid #14B8A6;
+  outline: 2px solid #2DD4BF;
   outline-offset: 2px;
 }
 
@@ -90,13 +90,13 @@ box-shadow: 0 4px 12px rgba(20, 184, 166, 0.15);
 }
 
 .priority-glow-high {
-  box-shadow: 0 0 20px rgba(20, 184, 166, 0.3);
+  box-shadow: 0 0 20px rgba(45, 212, 191, 0.4);
 }
 
 .priority-glow-medium {
-  box-shadow: 0 0 20px rgba(45, 212, 191, 0.3);
+  box-shadow: 0 0 20px rgba(20, 184, 166, 0.4);
 }
 
 .priority-glow-low {
-  box-shadow: 0 0 20px rgba(153, 246, 228, 0.3);
+  box-shadow: 0 0 20px rgba(13, 148, 136, 0.4);
 }

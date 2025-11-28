@@ -1,12 +1,25 @@
-import { createBrowserRouter } from 'react-router-dom';
-import { lazy, Suspense } from 'react';
-import { getRouteConfig } from './route.utils';
+import { createBrowserRouter } from "react-router-dom";
+import React, { Suspense, lazy } from "react";
+import { getRouteConfig } from "@/router/route.utils";
+import Layout from "@/components/organisms/Layout";
+import PromptPassword from "@/components/pages/PromptPassword";
+import Analytics from "@/components/pages/Analytics";
+import Callback from "@/components/pages/Callback";
+import Dashboard from "@/components/pages/Dashboard";
+import ErrorPage from "@/components/pages/ErrorPage";
+import NotFound from "@/components/pages/NotFound";
+import Login from "@/components/pages/Login";
+import ResetPassword from "@/components/pages/ResetPassword";
+import TaskManager from "@/components/pages/TaskManager";
+import Signup from "@/components/pages/Signup";
+import Root from "@/layouts/Root";
 
 // Lazy load components
 const Root = lazy(() => import('@/layouts/Root'));
 const Layout = lazy(() => import('@/components/organisms/Layout'));
 const Dashboard = lazy(() => import('@/components/pages/Dashboard'));
 const TaskManager = lazy(() => import('@/components/pages/TaskManager'));
+const LinksManager = lazy(() => import('@/components/pages/LinksManager'));
 const Analytics = lazy(() => import('@/components/pages/Analytics'));
 const NotFound = lazy(() => import('@/components/pages/NotFound'));
 const Login = lazy(() => import('@/components/pages/Login'));
@@ -70,9 +83,13 @@ const mainRoutes = [
     index: true,
     element: <Dashboard />
   }),
-  createRoute({
+createRoute({
     path: "tasks",
     element: <TaskManager />
+  }),
+  createRoute({
+    path: "links",
+    element: <LinksManager />
   }),
   createRoute({
     path: "analytics",

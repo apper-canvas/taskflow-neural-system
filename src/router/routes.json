@@ -24,6 +24,19 @@
       },
       "redirectOnDeny": "/login"
     }
+},
+  "/links": {
+    "allow": {
+      "when": {
+        "conditions": [
+          {
+            "label": "User must be authenticated to access links",
+            "rule": "authenticated"
+          }
+        ]
+      },
+      "redirectOnDeny": "/login"
+    }
   },
   "/analytics": {
     "allow": {

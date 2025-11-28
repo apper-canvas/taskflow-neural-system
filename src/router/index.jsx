@@ -1,20 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import React, { Suspense, lazy } from "react";
 import { getRouteConfig } from "@/router/route.utils";
-import Layout from "@/components/organisms/Layout";
-import PromptPassword from "@/components/pages/PromptPassword";
-import Analytics from "@/components/pages/Analytics";
-import Callback from "@/components/pages/Callback";
-import Dashboard from "@/components/pages/Dashboard";
-import ErrorPage from "@/components/pages/ErrorPage";
-import NotFound from "@/components/pages/NotFound";
-import Login from "@/components/pages/Login";
-import ResetPassword from "@/components/pages/ResetPassword";
-import TaskManager from "@/components/pages/TaskManager";
-import Signup from "@/components/pages/Signup";
-import Root from "@/layouts/Root";
 
-// Lazy load components
+// Lazy load all components
 const Root = lazy(() => import('@/layouts/Root'));
 const Layout = lazy(() => import('@/components/organisms/Layout'));
 const Dashboard = lazy(() => import('@/components/pages/Dashboard'));
@@ -41,6 +29,7 @@ const LoadingFallback = () => (
   </div>
 );
 
+// createRoute helper function
 const createRoute = ({
   path,
   index,
@@ -54,7 +43,7 @@ const createRoute = ({
   if (index) {
     configPath = "/";
   } else {
-    configPath = path.startsWith('/') ? path : `/${path}`;
+    configPath = path?.startsWith('/') ? path : `/${path}`;
   }
 
   const config = getRouteConfig(configPath);
@@ -79,25 +68,29 @@ const createRoute = ({
 // Main routes configuration
 const mainRoutes = [
   createRoute({
-    path: "",
     index: true,
-    element: <Dashboard />
+    element: <Dashboard />,
+    title: 'Dashboard'
   }),
-createRoute({
+  createRoute({
     path: "tasks",
-    element: <TaskManager />
+    element: <TaskManager />,
+    title: 'Task Manager'
   }),
   createRoute({
     path: "links",
-    element: <LinksManager />
+    element: <LinksManager />,
+    title: 'Links Manager'
   }),
   createRoute({
     path: "analytics",
-    element: <Analytics />
+    element: <Analytics />,
+    title: 'Analytics'
   }),
   createRoute({
     path: "*",
-    element: <NotFound />
+    element: <NotFound />,
+    title: 'Page Not Found'
   })
 ];
 
@@ -110,27 +103,33 @@ const routes = [
       // Authentication routes
       createRoute({
         path: "login",
-        element: <Login />
+        element: <Login />,
+        title: 'Login'
       }),
       createRoute({
         path: "signup",
-        element: <Signup />
+        element: <Signup />,
+        title: 'Sign Up'
       }),
       createRoute({
         path: "callback",
-        element: <Callback />
+        element: <Callback />,
+        title: 'Authentication Callback'
       }),
       createRoute({
         path: "error",
-        element: <ErrorPage />
+        element: <ErrorPage />,
+        title: 'Error'
       }),
       createRoute({
         path: "prompt-password/:appId/:emailAddress/:provider",
-        element: <PromptPassword />
+        element: <PromptPassword />,
+        title: 'Prompt Password'
       }),
       createRoute({
         path: "reset-password/:appId/:fields",
-        element: <ResetPassword />
+        element: <ResetPassword />,
+        title: 'Reset Password'
       }),
       // Main application routes
       {
@@ -141,4 +140,5 @@ const routes = [
     ]
   }
 ];
+
 export const router = createBrowserRouter(routes);
